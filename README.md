@@ -30,6 +30,7 @@ To optionally configure the length of the window in which you are notified of im
 
 
 class { 'ca_expiry_check':
+
   alertwindow              => 15552000,
 
 }
