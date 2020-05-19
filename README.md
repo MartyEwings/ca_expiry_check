@@ -22,19 +22,19 @@ This window by default is 90 days, but is configurable through the use of the "a
 
 To activate the notification functions of this module, classify your Primary Master (or which ever server hosts your main Puppet CA) with the ca_expiry_check class using your preferred classification method. Below is an example using site.pp.
 
+```
 node 'master.example.com' {
   include ca_expiry_check
 }
+```
 
 To optionally configure the length of the window in which you are notified of impending expiry away from the default of 90 days, add the `alertwindow` parameter with a value in seconds to your classification.
 
-
+```
 class { 'ca_expiry_check':
-
   alertwindow              => 15552000,
-
 }
-
+```
 
 #### Outputs
 
