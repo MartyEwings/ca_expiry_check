@@ -1,6 +1,6 @@
 {
   "name": "martyewings-ca_expiry_check",
-  "version": "0.1.1",
+  "version": "1.0",
   "author": "Marty Ewings",
   "summary": "Tools for monitoring and notifying of impending Puppet CA expiry",
   "license": "Apache-2.0",
