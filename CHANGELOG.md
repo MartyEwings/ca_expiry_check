@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.1.0
+
+**Features**
+Updated module to consider the new location of the CA directory in Puppet 7
 
 ## Release 1.0
 
