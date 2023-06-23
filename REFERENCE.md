@@ -28,11 +28,11 @@ include ca_expiry_check
 
 The following parameters are available in the `ca_expiry_check` class:
 
-* [`alertwindow`](#alertwindow)
+* [`alertwindow`](#-ca_expiry_check--alertwindow)
 
-##### <a name="alertwindow"></a>`alertwindow`
+##### <a name="-ca_expiry_check--alertwindow"></a>`alertwindow`
 
 Data type: `Integer`
 
-
+Integer value representing number of seconds prior to CA expiry alerts should trigger, defaults to 90 days
 
