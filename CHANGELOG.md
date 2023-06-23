@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 2.0.0
+
+**Features**
+Puppet 8 compatibility
+
+***Deprecations***
+
+Dropped support for puppet 4,5,6
+
+
 ## Release 1.1.0
 
 **Features**
