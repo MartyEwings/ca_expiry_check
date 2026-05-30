@@ -1,0 +1,49 @@
+name: "CI"
+
+on:
+  push:
+    branches:
+      - "main"
+      - "master"
+  pull_request:
+    branches:
+      - "main"
+      - "master"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: "Validate and lint (PDK)"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v5"
+
+      - name: "Set up Ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "3.2"
+
+      - name: "Install PDK"
+        run: "gem install pdk"
+
+      - name: "pdk validate (metadata, puppet-lint, rubocop, epp)"
+        run: "pdk validate --format text --puppet-version 8"
+
+  unit:
+    name: "Unit tests (Puppet 8)"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v5"
+
+      - name: "Set up Ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "3.2"
+
+      - name: "Install PDK"
+        run: "gem install pdk"
+
+      - name: "pdk test unit"
+        run: "pdk test unit --puppet-version 8"

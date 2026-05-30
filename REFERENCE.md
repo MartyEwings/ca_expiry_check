@@ -6,22 +6,46 @@
 
 ### Classes
 
-* [`ca_expiry_check`](#ca_expiry_check): Notify if CA will expire within a set window  Notifys on each puppet run should the CA Cert get within a specific window
+* [`ca_expiry_check`](#ca_expiry_check): Monitor and alert on impending Puppet CA certificate expiry.
 
 ## Classes
 
 ### <a name="ca_expiry_check"></a>`ca_expiry_check`
 
-Notify if CA will expire within a set window
+Consumes the `puppet_ca_expiry` structured fact (present only on Puppet CA
+hosts) and surfaces an alert as the certificate approaches expiry. Two
+thresholds are supported - a warning window and a tighter critical window -
+each with an independently configurable action (a Puppet `notify` resource,
+a compilation `warning`, a hard `fail`, or nothing).
 
-Notifys on each puppet run should the CA Cert get within a specific window
+Optionally it can also write the expiry data to a Prometheus node_exporter
+textfile and/or a JSON status file for consumption by external monitoring.
+
+The class is a no-op on any node where the `puppet_ca_expiry` fact is absent,
+so it is safe to classify broadly (for example via the `puppet` role).
 
 #### Examples
 
-##### 
+##### Defaults (notify within 90 days, dedicated message within 14 days)
 
 ```puppet
 include ca_expiry_check
+```
+
+##### Hard-fail the catalog once inside the critical window
+
+```puppet
+class { 'ca_expiry_check':
+  critical_severity => 'fail',
+}
+```
+
+##### Expose metrics to Prometheus node_exporter
+
+```puppet
+class { 'ca_expiry_check':
+  manage_textfile => true,
+}
 ```
 
 #### Parameters
@@ -29,10 +53,83 @@ include ca_expiry_check
 The following parameters are available in the `ca_expiry_check` class:
 
 * [`alertwindow`](#-ca_expiry_check--alertwindow)
+* [`critical_window`](#-ca_expiry_check--critical_window)
+* [`severity`](#-ca_expiry_check--severity)
+* [`critical_severity`](#-ca_expiry_check--critical_severity)
+* [`manage_textfile`](#-ca_expiry_check--manage_textfile)
+* [`textfile_path`](#-ca_expiry_check--textfile_path)
+* [`manage_report`](#-ca_expiry_check--manage_report)
+* [`report_path`](#-ca_expiry_check--report_path)
 
 ##### <a name="-ca_expiry_check--alertwindow"></a>`alertwindow`
 
-Data type: `Integer`
+Data type: `Integer[0]`
 
-Integer value representing number of seconds prior to CA expiry alerts should trigger, defaults to 90 days
+Warning threshold, in seconds before expiry, at which alerting begins.
+Defaults to 7776000 (90 days).
+
+Default value: `7776000`
+
+##### <a name="-ca_expiry_check--critical_window"></a>`critical_window`
+
+Data type: `Optional[Integer[0]]`
+
+Critical threshold, in seconds before expiry, at which `critical_severity`
+takes over from `severity`. Must be less than or equal to `alertwindow`.
+Set to `undef` to disable the critical tier. Defaults to 1209600 (14 days).
+
+Default value: `1209600`
+
+##### <a name="-ca_expiry_check--severity"></a>`severity`
+
+Data type: `Enum['notify', 'warning', 'fail', 'none']`
+
+Action taken while within the warning window (but outside the critical
+window): `notify`, `warning`, `fail` or `none`. Defaults to `notify`.
+
+Default value: `'notify'`
+
+##### <a name="-ca_expiry_check--critical_severity"></a>`critical_severity`
+
+Data type: `Enum['notify', 'warning', 'fail', 'none']`
+
+Action taken while within the critical window, or once the CA has expired.
+Defaults to `notify`. Set to `fail` to block catalog application until the
+CA is renewed (use with care on a primary server).
+
+Default value: `'notify'`
+
+##### <a name="-ca_expiry_check--manage_textfile"></a>`manage_textfile`
+
+Data type: `Boolean`
+
+Whether to write a Prometheus node_exporter textfile. Defaults to `false`.
+
+Default value: `false`
+
+##### <a name="-ca_expiry_check--textfile_path"></a>`textfile_path`
+
+Data type: `Pattern[/\A\//]`
+
+Absolute path for the node_exporter textfile. The parent directory is
+expected to already exist.
+
+Default value: `'/var/lib/node_exporter/textfile_collector/puppet_ca_expiry.prom'`
+
+##### <a name="-ca_expiry_check--manage_report"></a>`manage_report`
+
+Data type: `Boolean`
+
+Whether to write a JSON status report. Defaults to `false`.
+
+Default value: `false`
+
+##### <a name="-ca_expiry_check--report_path"></a>`report_path`
+
+Data type: `Pattern[/\A\//]`
+
+Absolute path for the JSON status report. The parent directory is expected
+to already exist.
+
+Default value: `'/opt/puppetlabs/puppet/cache/state/puppet_ca_expiry.json'`
 

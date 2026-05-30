@@ -1,8 +1,8 @@
 {
   "name": "martyewings-ca_expiry_check",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": "Marty Ewings",
-  "summary": "Tools for monitoring and notifying of impending Puppet CA expiry",
+  "summary": "Monitor and alert on impending Puppet CA certificate expiry",
   "license": "Apache-2.0",
   "source": "https://github.com/MartyEwings/ca_expiry_check",
   "project_page": "https://github.com/MartyEwings/ca_expiry_check",
@@ -12,39 +12,53 @@
   ],
   "operatingsystem_support": [
     {
-      "operatingsystem": "CentOS",
+      "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7"
+        "8",
+        "9",
+        "10"
       ]
     },
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "7"
+        "8",
+        "9"
       ]
     },
     {
-      "operatingsystem": "RedHat",
+      "operatingsystem": "AlmaLinux",
       "operatingsystemrelease": [
-        "8"
+        "8",
+        "9"
       ]
     },
     {
-      "operatingsystem": "Scientific",
+      "operatingsystem": "Rocky",
       "operatingsystemrelease": [
-        "7"
+        "8",
+        "9"
       ]
     },
     {
-      "operatingsystem": "Debian",
+      "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "9"
       ]
     },
     {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "11",
+        "12"
+      ]
+    },
+    {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "18.04"
+        "20.04",
+        "22.04",
+        "24.04"
       ]
     },
     {
@@ -57,10 +71,10 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 7.0.0 < 9.0.0"
+      "version_requirement": ">= 8.0.0 < 10.0.0"
     }
   ],
-  "pdk-version": "3.0.0.pre (1)",
+  "pdk-version": "3.4.0",
   "template-url": "https://github.com/puppetlabs/pdk-templates#main",
-  "template-ref": "heads/main-0-g928935d"
+  "template-ref": "heads/main-0-ga181866"
 }

@@ -1,0 +1,10 @@
+<%- | Hash $ca | -%>
+# HELP puppet_ca_expiry_seconds Seconds until the Puppet CA certificate expires (negative if expired).
+# TYPE puppet_ca_expiry_seconds gauge
+puppet_ca_expiry_seconds <%= $ca['seconds_remaining'] %>
+# HELP puppet_ca_expiry_days Whole days until the Puppet CA certificate expires.
+# TYPE puppet_ca_expiry_days gauge
+puppet_ca_expiry_days <%= $ca['days_remaining'] %>
+# HELP puppet_ca_expired Whether the Puppet CA certificate has expired (1 = expired, 0 = valid).
+# TYPE puppet_ca_expired gauge
+puppet_ca_expired <%= $ca['expired'] ? { true => 1, default => 0 } %>
