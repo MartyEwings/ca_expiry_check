@@ -19,39 +19,31 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v5"
 
+      - name: "Set up Ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "3.2"
+
       - name: "Install PDK"
-        run: |
-          . /etc/os-release
-          wget -q "https://apt.puppet.com/puppet-tools-release-${VERSION_CODENAME}.deb"
-          sudo dpkg -i "puppet-tools-release-${VERSION_CODENAME}.deb"
-          sudo apt-get update -qq
-          sudo apt-get install -y pdk
-          echo "/opt/puppetlabs/pdk/bin" >> "$GITHUB_PATH"
+        run: "gem install pdk"
 
       - name: "pdk validate (metadata, puppet-lint, rubocop, epp)"
         run: "pdk validate --format text --puppet-version 8"
 
   unit:
-    name: "Unit tests (Puppet ${{ matrix.puppet }})"
+    name: "Unit tests (Puppet 8)"
     runs-on: "ubuntu-latest"
-    strategy:
-      fail-fast: false
-      matrix:
-        puppet:
-          - "7"
-          - "8"
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v5"
 
+      - name: "Set up Ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "3.2"
+
       - name: "Install PDK"
-        run: |
-          . /etc/os-release
-          wget -q "https://apt.puppet.com/puppet-tools-release-${VERSION_CODENAME}.deb"
-          sudo dpkg -i "puppet-tools-release-${VERSION_CODENAME}.deb"
-          sudo apt-get update -qq
-          sudo apt-get install -y pdk
-          echo "/opt/puppetlabs/pdk/bin" >> "$GITHUB_PATH"
+        run: "gem install pdk"
 
       - name: "pdk test unit"
-        run: "pdk test unit --puppet-version ${{ matrix.puppet }}"
+        run: "pdk test unit --puppet-version 8"

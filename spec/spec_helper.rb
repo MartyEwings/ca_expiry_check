@@ -26,9 +26,7 @@ default_fact_files.each do |f|
 
   begin
     require 'deep_merge'
-    # NOTE: YAML.safe_load_file is unavailable on the Ruby 2.7 / Psych 3.1 that PDK pairs with
-    # Puppet 7, so read the file ourselves and use safe_load (works on both Ruby 2.7 and 3.x).
-    default_facts.deep_merge!(YAML.safe_load(File.read(f), permitted_classes: [], permitted_symbols: [], aliases: true))
+    default_facts.deep_merge!(YAML.safe_load_file(f, permitted_classes: [], permitted_symbols: [], aliases: true))
   rescue StandardError => e
     RSpec.configuration.reporter.message "WARNING: Unable to load #{f}: #{e}"
   end
