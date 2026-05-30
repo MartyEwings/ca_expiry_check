@@ -22,6 +22,8 @@ All notable changes to this project will be documented in this file.
   structured fact `puppet_ca_expiry`. Update any monitoring queries accordingly. The CA cert
   expiry date and seconds-remaining are now `puppet_ca_expiry.expiry_date` /
   `puppet_ca_expiry.seconds_remaining`.
+- Dropped Puppet 7 support. The requirement is now `>= 8.0.0 < 10.0.0` (Puppet 8, and Puppet 9
+  when released). For Puppet 7 / PE 2023.x estates, stay on 2.0.0.
 
 ## Release 2.0.0
 

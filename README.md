@@ -31,17 +31,17 @@ Puppet CA (the primary server, or a dedicated CA server / compiler hosting the C
 
 | Component | Supported |
 | --------- | --------- |
-| Puppet (core) | 7.x, 8.x |
-| Puppet Enterprise | 2023.x (LTS), 2025.x |
-| Facter | 4.x (bundled with Puppet 7/8) |
-| Ruby | 2.7+ (Puppet 8 vendors Ruby 3.2) |
+| Puppet (core) | 8.x, 9.x (when released) |
+| Puppet Enterprise | 2025.x and later |
+| Facter | 4.x (bundled with Puppet 8) |
+| Ruby | 3.2+ (vendored with Puppet 8) |
 
 Supported operating systems are listed in [`metadata.json`](metadata.json) (RHEL/AlmaLinux/Rocky/
 Oracle 8-10, CentOS 9, Debian 11-12, Ubuntu 20.04-24.04, SLES 15). The module only does meaningful
 work on the CA host; classifying it elsewhere is a harmless no-op.
 
 > The module auto-detects the CA certificate at `/etc/puppetlabs/puppetserver/ca/ca_crt.pem`
-> (Puppet 7+/8 and PE) and falls back to the legacy `/etc/puppetlabs/puppet/ssl/ca/ca_crt.pem`.
+> (Puppet 8 and PE) and falls back to the legacy `/etc/puppetlabs/puppet/ssl/ca/ca_crt.pem`.
 
 ## Use cases
 
@@ -219,11 +219,8 @@ The class parameter `alertwindow` is unchanged, so existing classification keeps
 This module uses the [Puppet Development Kit (PDK)](https://www.puppet.com/docs/pdk/3.x/pdk.html).
 
 ```bash
-pdk validate          # metadata, puppet-lint, rubocop, epp
-pdk test unit         # rspec-puppet + Facter unit tests
-
-# Test against Puppet 7 explicitly
-PUPPET_GEM_VERSION="~> 7.0" pdk test unit
+pdk validate --puppet-version 8   # metadata, puppet-lint, rubocop, epp
+pdk test unit --puppet-version 8  # rspec-puppet + Facter unit tests
 ```
 
 Pull requests are welcome at <https://github.com/MartyEwings/ca_expiry_check>.
