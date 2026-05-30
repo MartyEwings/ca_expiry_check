@@ -1,0 +1,14 @@
+<%- | Hash $ca | -%>
+<%# Escape backslashes then double-quotes so arbitrary subject/issuer DNs stay valid JSON. -%>
+<%- $esc = Hash($ca.filter |$k, $v| { $v =~ String }.map |$k, $v| { [$k, regsubst(regsubst($v, '\\\\', '\\\\\\\\', 'G'), '"', '\\"', 'G')] }) -%>
+{
+  "expiry_date": "<%= $esc['expiry_date'] %>",
+  "expiry_date_human": "<%= $esc['expiry_date_human'] %>",
+  "seconds_remaining": <%= $ca['seconds_remaining'] %>,
+  "days_remaining": <%= $ca['days_remaining'] %>,
+  "expired": <%= $ca['expired'] %>,
+  "subject": "<%= $esc['subject'] %>",
+  "issuer": "<%= $esc['issuer'] %>",
+  "serial": "<%= $esc['serial'] %>",
+  "path": "<%= $esc['path'] %>"
+}

@@ -1,0 +1,59 @@
+name: "CI"
+
+on:
+  push:
+    branches:
+      - "main"
+      - "master"
+  pull_request:
+    branches:
+      - "main"
+      - "master"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: "Validate and lint (PDK)"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Install PDK"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "3.2"
+          bundler-cache: false
+
+      - name: "Install PDK gem"
+        run: "gem install pdk"
+
+      - name: "pdk validate (metadata, puppet-lint, rubocop, epp)"
+        run: "pdk validate --format text --puppet-version 8"
+
+  unit:
+    name: "Unit tests (Puppet ${{ matrix.puppet }})"
+    runs-on: "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - puppet: "7"
+            ruby: "2.7"
+          - puppet: "8"
+            ruby: "3.2"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Set up Ruby ${{ matrix.ruby }}"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "${{ matrix.ruby }}"
+          bundler-cache: false
+
+      - name: "Install PDK gem"
+        run: "gem install pdk"
+
+      - name: "pdk test unit"
+        run: "pdk test unit --puppet-version ${{ matrix.puppet }}"
