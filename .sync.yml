@@ -1,0 +1,6 @@
+---
+# Keep our Ruby 2.7-safe YAML loader in spec_helper.rb. The pdk-templates
+# default uses YAML.safe_load_file, which does not exist in the Ruby 2.7 /
+# Psych 3.1 that PDK pairs with Puppet 7, so `pdk update` must not clobber it.
+spec/spec_helper.rb:
+  unmanaged: true
